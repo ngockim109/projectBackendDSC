@@ -7,17 +7,21 @@ typedef struct student
     char name[50];
     char sex[5];
     int age;
+    float mark1;
+    float mark2;
+    float mark3;
     float gpa;
     char rank[10];
 }ST;
 struct listStudents
 {
 	ST list[100];
-	int countStudent;
+	int countStudent = 0;
 };
+//xoa dau xuong dong;
 void delLineBreaks(char x[])
 {
-	size_t len = strlen(x);
+	size_t len = strlen(x); //len = do dai chuoi;
 	if(x[len-1]=='\n')
 	{
 		x[len-1]='\0';
@@ -25,8 +29,10 @@ void delLineBreaks(char x[])
 }
 void inputStudent(ST &st)
 {
-	printf("\nID: ");
-	scanf("%d", &st.id);
+	do{
+		printf("\nID: ");
+		scanf("%d", &st.id);
+	}while(st.id < 0);
 	getchar();
 	printf("\nName: ");
 	fflush(stdin);
@@ -36,30 +42,52 @@ void inputStudent(ST &st)
 	fflush(stdin);
 	fgets(st.sex, sizeof(st.sex), stdin);
 	delLineBreaks(st.sex);
-	printf("\nAge: ");
-	scanf("%d", &st.age);
-	printf("\nGPA: ");
-	scanf("%f", &st.gpa);
+	do{
+		printf("\nAge: ");
+		scanf("%d", &st.age);
+		if (st.age < 0 || st.age > 123) 
+        {printf("\nAge must be 0->123\n");}
+	}while(st.age < 0 || st.age > 123);
+	do{
+		printf("\nMark 1: ");
+		scanf("%f", &st.mark1);
+		if (st.mark1 < 0 || st.mark1 > 10) 
+        {printf("\nScore must be 0->10\n");}
+	}while(st.mark1 < 0 || st.mark1 > 10);
+	do{
+		printf("\nMark 2: ");
+		scanf("%f", &st.mark2);
+		if (st.mark2 < 0 || st.mark2 > 10) 
+        {printf("\nScore must be 0->10\n");}
+	}while(st.mark2 < 0 || st.mark2 > 10);
+	do{
+		printf("\nMark 3: ");
+		scanf("%f", &st.mark3);
+		if (st.mark3 < 0 || st.mark3 > 10) 
+        {printf("\nScore must be 0->10\n");}
+	}while(st.mark3 < 0 || st.mark3 > 10);
+}
+void gpa(ST &st)
+{
+	st.gpa = (st.mark1 + st.mark2 + st.mark3) / 3;
 }
 void rank(ST &st)
 {
-	if ((st.gpa) > 9)
-	{
-		strcpy(st.rank, "Excellent");
-	} else if ((st.gpa) > 8)
-	{
-		strcpy(st.rank, "Good");
-	} else if ((st.gpa) > 5)
-	{
-		strcpy(st.rank, "Average");
-	} else if ((st.gpa) < 5)
-	{
-		strcpy(st.rank, "Below Average");
-	}
+		if ((st.gpa) >= 9)
+		{strcpy(st.rank, "Excellent");}
+		else if ((st.gpa) >= 8)
+		{strcpy(st.rank, "Very Good");} 
+		else if ((st.gpa) >= 7)
+		{strcpy(st.rank, "Good");} 
+		else if ((st.gpa) >= 5)
+		{strcpy(st.rank, "Average");} 
+		else if ((st.gpa) < 5)
+		{strcpy(st.rank, "Below Average");}
 }
 void updateStudent(ST &st)
 {
 	inputStudent(st);
+	gpa(st);
 	rank(st);
 }
 void inputListStudents(ST list[], int &countStudent)
@@ -72,20 +100,22 @@ void inputListStudents(ST list[], int &countStudent)
 	int i;
 	for (i = 0; i < countStudent; i++)
 	{
-		printf("\nEnter Student %d", i);
+		printf("\nEnter Student %d", i+1);
 		updateStudent(list[i]);
 	}
 }
 void print()
 {
-	printf("\n%5s \t %20s \t %10s \t %4s \t %5s \t %10s", "ID", "Name", "Sex", "Age", "GPA", "Rank");
+	printf("\n%5s \t %20s \t %10s \t %4s \t %7s \t %6s \t %6s \t %5s \t %13s", "ID", "Name", "Sex", "Age", "Mark 1", "Mark 2", "Mark 3", "GPA", "Rank");
 }
 void outputStudent(ST &st)
 {
-	printf("\n%5d \t %20s \t %10s \t %4d \t %5g \t %10s", st.id, st.name, st.sex,st.age, st.gpa, st.rank);
+	printf("\n%5d \t %20s \t %10s \t %4d \t %6g \t %6g \t %6g \t %6.2g \t %4s", st.id, st.name, st.sex,st.age, st.mark1, st.mark2, st.mark3, st.gpa, st.rank);
 }
 void outputListStudents(ST list[], int countStudent)
 {
+	printf("***********************************************************************************************************************************");
+	printf("\nTotal: %d\n", countStudent);
 	print();
 	printf("\n");
 	int i;
@@ -220,7 +250,7 @@ void addNewStudent(listStudents *listAdd, int add, ST &st)
 void inputFile(ST list[], int countStudent) //ghi du lieu vao file dang nhi phan;
 {
 	char fileName[100];
-	printf("\nEnter file path and file name: ");
+	printf("\nEnter file path or file name: ");
 	fflush(stdin);
 	fgets(fileName, sizeof(fileName), stdin);
 	delLineBreaks(fileName);
@@ -243,7 +273,7 @@ void inputFile(ST list[], int countStudent) //ghi du lieu vao file dang nhi phan
 void takeFromFile(ST list[], int &countStudent) //lay du lieu tu file dang nhi phan;
 {
 	char fileName[100];
-	printf("\nEnter file path and file name: ");
+	printf("\nEnter file path or file name: ");
 	fflush(stdin);
 	fgets(fileName, sizeof(fileName), stdin);
 	delLineBreaks(fileName);
@@ -266,7 +296,7 @@ void takeFromFile(ST list[], int &countStudent) //lay du lieu tu file dang nhi p
 void printToScreen()
 {
 	printf("\n******************************************************************\n");
-	printf("**              PROGRAM MANAGEMENT STUDENTS                     **\n");
+	printf("**              PROGRAM STUDENTS MANAGEMENT                     **\n");
 	printf("**              1.Input List Student                            **\n");
 	printf("**              2.Output List Student                           **\n");
 	printf("**              3.Find Student By ID                            **\n");
@@ -361,9 +391,9 @@ int main()
 				return 0;
 				break;
 			default:
-			printf("Please type agian!!!");
+			printf("Please type again!!!");
 			break;
 		}
-	} while(choice != 0);
+	} while(1 <= choice <= 12);
     return 0;
 }
