@@ -46,7 +46,7 @@ void inputStudent(ST &st)
 		printf("\nAge: ");
 		scanf("%d", &st.age);
 		if (st.age < 0 || st.age > 123) 
-        {printf("\nAge must be 0->123\n");}
+        {printf("\nAge must be 1->123\n");}
 	}while(st.age < 0 || st.age > 123);
 	do{
 		printf("\nMark 1: ");
