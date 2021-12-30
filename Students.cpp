@@ -114,7 +114,7 @@ void outputStudent(ST &st)
 }
 void outputListStudents(ST list[], int countStudent)
 {
-	printf("***********************************************************************************************************************************");
+	printf("\n***********************************************************************************************************************************");
 	printf("\nTotal: %d\n", countStudent);
 	print();
 	printf("\n");
@@ -182,6 +182,7 @@ void delStudentById(ST list[], int &countStudent, int id)
 				list[j] = list[j+1];
 			}
 			countStudent--;
+		printf("Sucess!");
 		}
 	}
 }
@@ -243,6 +244,7 @@ void addNewStudent(listStudents *listAdd, int add, ST &st)
 	{
 		(*listAdd).list[i] = (*listAdd).list[i-1];
 	}
+	gpa(st);
 	rank(st);
 	(*listAdd).list[add] = st;
 	(*listAdd).countStudent += 1;
@@ -338,7 +340,7 @@ int main()
 				nextStep();
 				break;
 			case 3:
-				printf("\nEnter ID of Student: "); 
+				printf("\nEnter ID of Student (1-100): "); 
 				scanf("%d", &id);
 				findStudentById(listAdd.list, listAdd.countStudent, id);
 				nextStep();
@@ -348,8 +350,10 @@ int main()
 				nextStep();
 				break;
 			case 5:
-				printf("\nEnter position you want to add: ");
-				scanf("%d", &add);
+				do{
+					printf("\nEnter position you want to add (add-1): ");
+					scanf("%d", &add);
+				}while ((add < 0) || (add > (listAdd.countStudent)));
 				inputStudent(st);
 				addNewStudent(&listAdd, add, st);
 				printf("\nList of Students after adding:");
@@ -358,8 +362,10 @@ int main()
 				break;				
 			case 6:
 				int id;
-				printf("\nEnter id of Student: ");
-				scanf("%d", &id);
+				do{
+					printf("\nEnter id of Student: ");
+					scanf("%d", &id);
+				}while ((id <= 0) || (id > (listAdd.countStudent)));
 				delStudentById(listAdd.list, listAdd.countStudent, id);
 				nextStep();
 				break;
